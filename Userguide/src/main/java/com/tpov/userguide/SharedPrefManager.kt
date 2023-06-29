@@ -43,3 +43,5 @@ object SharedPrefManager {
         sharedPreferences.edit().putInt(idView.toString(), updatedCounter).apply()
     }
 }
+
+

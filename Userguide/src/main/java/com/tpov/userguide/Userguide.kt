@@ -3,14 +3,13 @@ package com.tpov.userguide
 import android.app.Activity
 import android.content.Context
 import android.graphics.drawable.Drawable
-import android.net.Uri
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.widget.Toast
 import androidx.fragment.app.FragmentManager
 
-class UserguideImpl(private val context: Context) : UserguideLibrary {
+class Userguide(private val context: Context) : UserguideInterface {
     private val guideItems: MutableList<GuideItem> = mutableListOf()
 
     override fun addGuide(item: View, text: String, titulText: String?, image: Drawable?, video: String?) {

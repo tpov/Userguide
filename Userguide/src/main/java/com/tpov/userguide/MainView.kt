@@ -4,7 +4,7 @@ import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.Drawable
-import android.net.Uri
+import android.os.Handler
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
@@ -37,7 +37,7 @@ class MainView : AppCompatActivity() {
     ) {
         val dialog = BottomSheetDialog(context, R.style.BottomSheetDialog)
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-        dialog.window?.setWindowAnimations(R.style.DialogAnimation)
+        dialog.window?.setWindowAnimations(R.style.UserguideDialogAnimation)
 
         val dialogView = View.inflate(context, R.layout.userguide_dialog_layout, null)
         val animationView: LottieAnimationView = dialogView.findViewById(R.id.anv_true)
@@ -74,7 +74,14 @@ class MainView : AppCompatActivity() {
                 }
             } else videoIcon.visibility = View.GONE
         }
-        dialog.show()
+
+        val handler = Handler()
+
+// Где-то после запуска фрагмента
+        handler.postDelayed({
+            // Отображение диалогового окна из вашей библиотеки
+            dialog.show()
+        }, 500)
     }
 
     private fun showVideoDialog(video: String, context: Context) {

@@ -10,7 +10,7 @@
         <item name="android:background">@android:color/transparent</item>
     </style>
 
-    <style name="DialogAnimation">
+    <style name="UserguideDialogAnimation">
 
         <item name="android:windowEnterAnimation">@anim/dialog_enter_animation</item>
         <item name="android:windowExitAnimation">@anim/dialog_exit_animation</item>
