@@ -49,7 +49,6 @@ class MainView : AppCompatActivity() {
         animationView.setOnClickListener {
             dialog.closeOptionsMenu()
         }
-
         val container =
             dialog.findViewById<FrameLayout>(com.google.android.material.R.id.design_bottom_sheet)?.parent as? View
         container?.setBackgroundColor(Color.TRANSPARENT)
@@ -74,7 +73,6 @@ class MainView : AppCompatActivity() {
                 }
             } else videoIcon.visibility = View.GONE
         }
-
         dialog.show()
     }
 

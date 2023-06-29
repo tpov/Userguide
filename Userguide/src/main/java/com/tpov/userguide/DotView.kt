@@ -8,7 +8,6 @@ import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.View
-import android.view.ViewTreeObserver
 
 class DotView {
 
@@ -19,20 +18,30 @@ class DotView {
 
         item.foreground = dotDrawable
 
-        item.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
-            override fun onGlobalLayout() {
-                // Удаляем слушатель событий после первого вызова, чтобы избежать повторного вызова
-                item.viewTreeObserver.removeOnGlobalLayoutListener(this)
+        val listenersList = mutableListOf<View.OnClickListener>()
 
-                // Устанавливаем слушатель для вью
-                item.setOnClickListener {
-                    MainView().showDialog(text, titulText, image, video, context)
-                    Log.d("osfefjse","$text")
-                }
+        // Сохраняем существующий слушатель (если есть)
+        val oldOnClickListener = item.getTag(item.id) as? View.OnClickListener
+        if (oldOnClickListener != null) {
+            listenersList.add(oldOnClickListener)
+        }
+
+        // Создаем новый слушатель
+        val newOnClickListener = View.OnClickListener {
+            // Выполняем все слушатели из списка
+            for (listener in listenersList) {
+                listener.onClick(item)
             }
-        })
-    }
 
+            // Добавляем логику нового слушателя
+            MainView().showDialog(text, titulText, image, video, context)
+            Log.d("osfefjse", "$text")
+        }
+
+        // Добавляем новый слушатель в список и устанавливаем его на элемент
+        listenersList.add(newOnClickListener)
+        item.setOnClickListener(newOnClickListener)
+    }
 
     private class DotDrawable(private val foregroundDrawable: Drawable) : Drawable() {
         private val dotColor = Color.RED
