@@ -8,19 +8,31 @@ import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.View
+import android.view.ViewTreeObserver
 
 class DotView {
+
+
     fun showDot(item: View, text: String, titulText: String?, image: Drawable?, video: String?, context: Context) {
-        val originalForeground = item?.foreground ?: ColorDrawable(Color.TRANSPARENT)
+        val originalForeground = item.foreground ?: ColorDrawable(Color.TRANSPARENT)
         val dotDrawable = DotDrawable(originalForeground)
 
-        item?.foreground = dotDrawable
+        item.foreground = dotDrawable
 
-        item?.setOnClickListener {
-            MainView().showDialog(text, titulText, image, video, context)
-            Log.d("osfefjse","$text")
-        }
+        item.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                // Удаляем слушатель событий после первого вызова, чтобы избежать повторного вызова
+                item.viewTreeObserver.removeOnGlobalLayoutListener(this)
+
+                // Устанавливаем слушатель для вью
+                item.setOnClickListener {
+                    MainView().showDialog(text, titulText, image, video, context)
+                    Log.d("osfefjse","$text")
+                }
+            }
+        })
     }
+
 
     private class DotDrawable(private val foregroundDrawable: Drawable) : Drawable() {
         private val dotColor = Color.RED

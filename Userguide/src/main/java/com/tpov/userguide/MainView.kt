@@ -75,13 +75,7 @@ class MainView : AppCompatActivity() {
             } else videoIcon.visibility = View.GONE
         }
 
-        val handler = Handler()
-
-// Где-то после запуска фрагмента
-//        handler.postDelayed({
-//            // Отображение диалогового окна из вашей библиотеки
-//            dialog.show()
-//        }, 500)
+        dialog.show()
     }
 
     private fun showVideoDialog(video: String, context: Context) {
