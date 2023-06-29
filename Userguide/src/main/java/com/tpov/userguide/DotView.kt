@@ -22,7 +22,9 @@ class DotView {
         val listenersList = mutableListOf<View.OnClickListener>()
 
         val oldOnClickListener = item.getTag(item.id) as? View.OnClickListener
+        Log.d("showDot", "2")
         if (oldOnClickListener != null) {
+            Log.d("showDot", "3")
             listenersList.add(oldOnClickListener)
         }
 
@@ -34,6 +36,7 @@ class DotView {
         listenersList.add(newOnClickListener)
 
         item.setOnClickListener {
+            Log.d("showDot", "4 $listenersList")
             for (listener in listenersList) {
                 listener.onClick(item)
             }
