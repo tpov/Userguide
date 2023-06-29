@@ -11,8 +11,9 @@ import android.view.View
 
 class DotView {
 
-
     fun showDot(item: View, text: String, titulText: String?, image: Drawable?, video: String?, context: Context) {
+        Log.d("showDot", "showDot() called with text: $text")
+
         val originalForeground = item.foreground ?: ColorDrawable(Color.TRANSPARENT)
         val dotDrawable = DotDrawable(originalForeground)
 
@@ -20,27 +21,23 @@ class DotView {
 
         val listenersList = mutableListOf<View.OnClickListener>()
 
-        // Сохраняем существующий слушатель (если есть)
         val oldOnClickListener = item.getTag(item.id) as? View.OnClickListener
         if (oldOnClickListener != null) {
             listenersList.add(oldOnClickListener)
         }
 
-        // Создаем новый слушатель
         val newOnClickListener = View.OnClickListener {
-            // Выполняем все слушатели из списка
+            MainView().showDialog(text, titulText, image, video, context)
+            Log.d("showDot", "New onClickListener executed with text: $text")
+        }
+
+        listenersList.add(newOnClickListener)
+
+        item.setOnClickListener {
             for (listener in listenersList) {
                 listener.onClick(item)
             }
-
-            // Добавляем логику нового слушателя
-            MainView().showDialog(text, titulText, image, video, context)
-            Log.d("osfefjse", "$text")
         }
-
-        // Добавляем новый слушатель в список и устанавливаем его на элемент
-        listenersList.add(newOnClickListener)
-        item.setOnClickListener(newOnClickListener)
     }
 
     private class DotDrawable(private val foregroundDrawable: Drawable) : Drawable() {
