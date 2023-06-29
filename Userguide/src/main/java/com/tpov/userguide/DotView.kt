@@ -6,19 +6,17 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
-import android.net.Uri
 import android.util.Log
 import android.view.View
 
 class DotView {
     fun showDot(item: View, text: String, titulText: String?, image: Drawable?, video: String?, context: Context) {
-        val button = item as? View
-        val originalForeground = button?.foreground ?: ColorDrawable(Color.TRANSPARENT)
+        val originalForeground = item?.foreground ?: ColorDrawable(Color.TRANSPARENT)
         val dotDrawable = DotDrawable(originalForeground)
 
-        button?.foreground = dotDrawable
+        item?.foreground = dotDrawable
 
-        button?.setOnClickListener {
+        item?.setOnClickListener {
             MainView().showDialog(text, titulText, image, video, context)
             Log.d("osfefjse","$text")
         }

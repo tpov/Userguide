@@ -78,10 +78,10 @@ class MainView : AppCompatActivity() {
         val handler = Handler()
 
 // Где-то после запуска фрагмента
-        handler.postDelayed({
-            // Отображение диалогового окна из вашей библиотеки
-            dialog.show()
-        }, 500)
+//        handler.postDelayed({
+//            // Отображение диалогового окна из вашей библиотеки
+//            dialog.show()
+//        }, 500)
     }
 
     private fun showVideoDialog(video: String, context: Context) {
