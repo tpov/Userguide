@@ -18,7 +18,8 @@ class DotView {
         image: Drawable?,
         video: String?,
         context: Context,
-        callback: () -> Unit // Функция обратного вызова
+        callback: (() -> Unit)?,
+        options: Options
     ) {
         val originalForeground = item.foreground ?: ColorDrawable(Color.TRANSPARENT)
         val dotDrawable = DotDrawable(originalForeground)
@@ -26,15 +27,18 @@ class DotView {
         item.foreground = dotDrawable
 
         item.setOnClickListener {
-            // Выполнение кода обратного вызова
-            callback.invoke()
-            // Код слушателя
-            MainView().showDialog(text, titulText, image, video, context)
+            SharedPrefManager.incrementCounterDialogView(context, item.id)
+            callback?.invoke()
+
+            MainView().showDialog( text = text,
+                titulText = titulText,
+                image = image,
+                video = video,
+                context = context
+            )
+
             Log.d("osfefjse", "$text")
-
-            // Возврат фона элемента в предыдущее состояние
             item.foreground = originalForeground
-
         }
     }
 

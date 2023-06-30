@@ -4,7 +4,7 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.view.View
 
-data class GuideItem(
+internal data class GuideItem(
     val view: View,
     val text: String,
     val image: Drawable?,

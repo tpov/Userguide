@@ -30,11 +30,12 @@ class MainView : AppCompatActivity() {
 
     fun showDialog(
         text: String,
-        titulText: String?,
-        image: Drawable?,
-        video: String?,
-        context: Context
+        context: Context,
+        titulText: String? = null,
+        image: Drawable? = null,
+        video: String? = null,
     ) {
+
         val dialog = BottomSheetDialog(context, R.style.BottomSheetDialog)
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
         dialog.window?.setWindowAnimations(R.style.UserguideDialogAnimation)

@@ -35,11 +35,11 @@ object SharedPrefManager {
         sharedPreferences.edit().putInt(idView.toString(), 0).apply()
     }
 
-    //counterView--
-    fun decrementCounterView(context: Context, idView: Int) {
+    //counterView++
+    fun incrementCounterDialogView(context: Context, idView: Int) {
         val sharedPreferences = context.getSharedPreferences(this.PREF_KEY_COUNTER_VIEW, Context.MODE_PRIVATE)
         val counter = sharedPreferences.getInt(idView.toString(), 0)
-        val updatedCounter = counter - 1
+        val updatedCounter = counter + 1
         sharedPreferences.edit().putInt(idView.toString(), updatedCounter).apply()
     }
 }
