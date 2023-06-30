@@ -11,13 +11,31 @@ import android.view.View
 
 class DotView {
 
-    fun showDot(item: View, text: String, titulText: String?, image: Drawable?, video: String?, context: Context) {
+    fun showDot(
+        item: View,
+        text: String,
+        titulText: String?,
+        image: Drawable?,
+        video: String?,
+        context: Context,
+        callback: () -> Unit // Функция обратного вызова
+    ) {
         val originalForeground = item.foreground ?: ColorDrawable(Color.TRANSPARENT)
         val dotDrawable = DotDrawable(originalForeground)
 
         item.foreground = dotDrawable
 
+        item.setOnClickListener {
+            // Выполнение кода обратного вызова
+            callback.invoke()
+            // Код слушателя
+            MainView().showDialog(text, titulText, image, video, context)
+            Log.d("osfefjse", "$text")
 
+            // Возврат фона элемента в предыдущее состояние
+            item.foreground = originalForeground
+
+        }
     }
 
     private class DotDrawable(private val foregroundDrawable: Drawable) : Drawable() {
