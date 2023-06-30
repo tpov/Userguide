@@ -8,56 +8,22 @@ import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.View
-import android.view.ViewTreeObserver
 
 class DotView {
 
     fun showDot(item: View, text: String, titulText: String?, image: Drawable?, video: String?, context: Context) {
-        Log.d("showDot", "showDot() called with text: $text")
-
         val originalForeground = item.foreground ?: ColorDrawable(Color.TRANSPARENT)
         val dotDrawable = DotDrawable(originalForeground)
 
         item.foreground = dotDrawable
 
-        val listenersList = mutableListOf<View.OnClickListener>()
-
-        val oldOnClickListener = item.getTag(item.id) as? View.OnClickListener
-        if (oldOnClickListener != null) {
-            listenersList.add(oldOnClickListener)
-        }
-
-        val newOnClickListener = View.OnClickListener {
+        item.setOnClickListener {
             MainView().showDialog(text, titulText, image, video, context)
-            Log.d("showDot", "New onClickListener executed with text: $text")
-        }
+            Log.d("osfefjse", "$text")
 
-        listenersList.add(newOnClickListener)
+            item.foreground = originalForeground
 
-        val combinedOnClickListener = CombinedOnClickListener(listenersList)
-        item.setOnClickListener(combinedOnClickListener)
-
-        val viewTreeObserver = item.viewTreeObserver
-        viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
-            override fun onGlobalLayout() {
-                // Remove the listener to avoid duplicate calls
-                item.viewTreeObserver.removeOnGlobalLayoutListener(this)
-
-                // Add the first listener if it exists
-                if (oldOnClickListener != null) {
-                    item.setOnClickListener(oldOnClickListener)
-                }
-            }
-        })
-    }
-
-    class CombinedOnClickListener(
-        private val listeners: List<View.OnClickListener>
-    ) : View.OnClickListener {
-        override fun onClick(view: View) {
-            for (listener in listeners) {
-                listener.onClick(view)
-            }
+            item.setOnClickListener(null)
         }
     }
 
