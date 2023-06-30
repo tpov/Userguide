@@ -59,7 +59,7 @@ class Userguide(private val context: Context) {
         callback: (() -> Unit)?,
         options: Options
     ) {
-        DotView().showDot(item, text, titulText, image, video, context, callback)
+        DotView().showDot(item, text, titulText, image, video, context, callback, options)
 
         Toast.makeText(context, "view dot", Toast.LENGTH_SHORT).show()
         val guideItem = GuideItem(item, text, image, video)
