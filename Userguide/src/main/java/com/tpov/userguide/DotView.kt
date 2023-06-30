@@ -8,6 +8,7 @@ import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.View
+import android.view.ViewTreeObserver
 
 class DotView {
 
@@ -22,9 +23,7 @@ class DotView {
         val listenersList = mutableListOf<View.OnClickListener>()
 
         val oldOnClickListener = item.getTag(item.id) as? View.OnClickListener
-        Log.d("showDot", "2")
         if (oldOnClickListener != null) {
-            Log.d("showDot", "3")
             listenersList.add(oldOnClickListener)
         }
 
@@ -35,10 +34,29 @@ class DotView {
 
         listenersList.add(newOnClickListener)
 
-        item.setOnClickListener {
-            Log.d("showDot", "4 $listenersList")
-            for (listener in listenersList) {
-                listener.onClick(item)
+        val combinedOnClickListener = CombinedOnClickListener(listenersList)
+        item.setOnClickListener(combinedOnClickListener)
+
+        val viewTreeObserver = item.viewTreeObserver
+        viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                // Remove the listener to avoid duplicate calls
+                item.viewTreeObserver.removeOnGlobalLayoutListener(this)
+
+                // Add the first listener if it exists
+                if (oldOnClickListener != null) {
+                    item.setOnClickListener(oldOnClickListener)
+                }
+            }
+        })
+    }
+
+    class CombinedOnClickListener(
+        private val listeners: List<View.OnClickListener>
+    ) : View.OnClickListener {
+        override fun onClick(view: View) {
+            for (listener in listeners) {
+                listener.onClick(view)
             }
         }
     }
