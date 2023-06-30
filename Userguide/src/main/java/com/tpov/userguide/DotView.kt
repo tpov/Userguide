@@ -17,14 +17,7 @@ class DotView {
 
         item.foreground = dotDrawable
 
-        item.setOnClickListener {
-            MainView().showDialog(text, titulText, image, video, context)
-            Log.d("osfefjse", "$text")
 
-            item.foreground = originalForeground
-
-            item.setOnClickListener(null)
-        }
     }
 
     private class DotDrawable(private val foregroundDrawable: Drawable) : Drawable() {
