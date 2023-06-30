@@ -12,12 +12,12 @@ import androidx.fragment.app.FragmentManager
 class Userguide(private val context: Context) : UserguideInterface {
     private val guideItems: MutableList<GuideItem> = mutableListOf()
 
-    override fun addGuide(item: View, text: String, titulText: String?, image: Drawable?, video: String?) {
+    override fun addGuide(item: View, text: String, titulText: String?, image: Drawable?, video: String?, callback: () -> Unit) {
         val activity = item.context as? Activity
         if (activity != null && !activity.isFinishing) {
 
             val rootView = activity.window.decorView.findViewById<ViewGroup>(android.R.id.content)
-            initDot(item, text, titulText, image, video)
+            initDot(item, text, titulText, image, video, callback)
             rootView.viewTreeObserver.addOnGlobalLayoutListener(object :
                 ViewTreeObserver.OnGlobalLayoutListener {
                 override fun onGlobalLayout() {
@@ -37,9 +37,10 @@ class Userguide(private val context: Context) : UserguideInterface {
         text: String,
         titulText: String?,
         image: Drawable?,
-        video: String?
+        video: String?,
+        callback: () -> Unit
     ) {
-        DotView().showDot(item, text, titulText, image, video, context)
+        DotView().showDot(item, text, titulText, image, video, context, callback)
 
         SharedPrefManager.decrementCounterView(context, item.id)
         Toast.makeText(context, "view dot", Toast.LENGTH_SHORT).show()
