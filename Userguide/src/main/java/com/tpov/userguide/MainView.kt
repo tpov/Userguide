@@ -47,7 +47,7 @@ class MainView : AppCompatActivity() {
         animationView.playAnimation()
         animationView.repeatCount = LottieDrawable.INFINITE
         animationView.setOnClickListener {
-            dialog.closeOptionsMenu()
+            dialog.dismiss()
         }
         val container =
             dialog.findViewById<FrameLayout>(com.google.android.material.R.id.design_bottom_sheet)?.parent as? View
