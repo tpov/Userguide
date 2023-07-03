@@ -88,7 +88,7 @@ class Userguide(private val context: Context) {
                 video = video,
                 context = context
             )
-            setCounterView(0)
+            incrementView(0)
         }
     }
 
@@ -134,5 +134,7 @@ class Userguide(private val context: Context) {
     private fun getCounterView(idView: Int) = SharedPrefManager.getCounterView(context, idView)
 
     private fun setCounterView(idView: Int) = SharedPrefManager.setCounterView(context, idView)
+
+    private fun incrementView(idView: Int) = SharedPrefManager.incrementCounterDialogView(context, idView)
 
 }
