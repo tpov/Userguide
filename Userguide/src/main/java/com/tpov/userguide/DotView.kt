@@ -13,38 +13,55 @@ class DotView {
 
     fun showDot(
         item: View,
-        text: String,
+        text: String?,
         titulText: String?,
         image: Drawable?,
         video: String?,
         context: Context,
         callback: (() -> Unit)?,
-        options: Options
+        showOriginalView: Boolean
     ) {
         val originalForeground = item.foreground ?: ColorDrawable(Color.TRANSPARENT)
         val dotDrawable = DotDrawable(originalForeground)
+        var showDialog = true
 
         item.foreground = dotDrawable
 
         item.setOnClickListener {
-            SharedPrefManager.incrementCounterDialogView(context, item.id)
-            callback?.invoke()
-
-            MainView().showDialog( text = text,
-                titulText = titulText,
-                image = image,
-                video = video,
-                context = context
-            )
-
-            Log.d("osfefjse", "$text")
-            item.foreground = originalForeground
+            if (!showDialog) {
+                callback?.invoke()
+            } else {
+                SharedPrefManager.incrementCounterDialogView(context, item.id)
+                callback?.invoke()
+                if (text != null) {
+                    MainView().showDialog(
+                        text = text,
+                        titulText = titulText,
+                        image = image,
+                        video = video,
+                        context = context
+                    )
+                }
+                Log.d("osfefjse", "$text")
+                if (showOriginalView) {
+                    item.foreground = originalForeground
+                    showDialog = false
+                }
+            }
         }
+    }
+
+    fun setCounterKey(context: Context) {
+        SharedPrefManager.incrementCounter(context)
+    }
+
+    fun setCounterKey(count: Int, context: Context) {
+        SharedPrefManager.setCounter(context, count)
     }
 
     private class DotDrawable(private val foregroundDrawable: Drawable) : Drawable() {
         private val dotColor = Color.RED
-        private val dotRadius = 6f // Размер точки в пикселях
+        private val dotRadius = 6f
 
         override fun draw(canvas: Canvas) {
             foregroundDrawable.bounds = bounds
