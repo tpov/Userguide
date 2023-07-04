@@ -36,7 +36,7 @@ class DotView {
                 if (!showDialog) {
                     callback?.invoke()
                 } else {
-                    SharedPrefManager.incrementCounterDialogView(context, view.id)
+                    SharedPrefManager.incrementCounterDialogView(context, item.id)
                     callback?.invoke()
                     if (text != null) {
                         MainView().showDialog(
