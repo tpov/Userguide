@@ -3,41 +3,40 @@ package com.tpov.userguide
 import android.app.Activity
 import android.content.Context
 import android.graphics.drawable.Drawable
-import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.FragmentManager
 
-class Userguide(private val context: Context) {
+class Userguide(private val context: Context, val theme: Drawable? = null) {
     private val guideItems: MutableList<GuideItem> = mutableListOf()
 
     fun addGuide(
-        item: View,
+        view: View,
         text: String,
         titulText: String? = null,
-        image: Drawable? = null,
+        iconDialog: Drawable? = null,
         video: String? = null,
-        callback: (() -> Unit)? = null,
+        callback: (() -> Unit)? = null, //Укажите код который должен выполнится после нажатия на view, поскольку эта библиотека перехватывает слушатель на view
+        vararg generalView: View = emptyArray(), //Во всех переданных элементах будет отображаться точка пока будет отображаться точка на item
         options: Options = Options()
     ) {
-        val activity = item.context as? Activity
+        val activity = view.context as? Activity
 
         if (
             activity != null && !activity.isFinishing
             && (getCounterValue() >= options.countKey  //Общий ключ > ключ этого гайда или ключ гайда = 0
                     || options.countKey == 0)
-            && getCounterView(item.id) < options.countRepeat
+            && getCounterView(view.id) < options.countRepeat
         ) {
             initDot(
-                item,
+                view,
+                generalView,
                 text,
                 titulText,
-                image,
+                iconDialog,
                 video,
                 callback,
-                showOriginalView = options.countRepeat - getCounterView(item.id) == 1
+                showOriginalView = options.countRepeat - getCounterView(view.id) == 1
             )
-
 
 //            val rootView = activity.window.decorView.findViewById<ViewGroup>(android.R.id.content)
 //            rootView.viewTreeObserver.addOnGlobalLayoutListener(object :
@@ -56,6 +55,7 @@ class Userguide(private val context: Context) {
 
     private fun initDot(
         item: View,
+        generalView: Array<out View> = emptyArray(),
         text: String? = null,
         titulText: String?,
         image: Drawable?,
@@ -63,7 +63,7 @@ class Userguide(private val context: Context) {
         callback: (() -> Unit)?,
         showOriginalView: Boolean
     ) {
-        DotView().showDot(item, text, titulText, image, video, context, callback, showOriginalView)
+        DotView().showDot(item, generalView, text, titulText, image, video, context, callback, showOriginalView, theme)
 
         val guideItem = GuideItem(item, text, image, video)
         guideItems.add(guideItem)
@@ -71,6 +71,15 @@ class Userguide(private val context: Context) {
 
     private fun getAllGuideItems(): List<GuideItem> {
         return guideItems.toList()
+    }
+
+    fun addOnlyDot(
+        item: View
+    ) {
+        if (getCounterView(item.id) == 0) {
+            DotView().showDot(item, context = context, showOriginalView = true, theme = theme)
+            incrementView(item.id)
+        }
     }
 
     fun addGuideNewVersion(
@@ -86,7 +95,8 @@ class Userguide(private val context: Context) {
                 titulText = titulText,
                 image = image,
                 video = video,
-                context = context
+                context = context,
+                theme = theme
             )
             incrementView(0)
         }
@@ -105,7 +115,8 @@ class Userguide(private val context: Context) {
                 titulText = titulText,
                 image = image,
                 video = video,
-                context = context
+                context = context,
+                theme = theme
             )
         }
     }
@@ -135,6 +146,7 @@ class Userguide(private val context: Context) {
 
     private fun setCounterView(idView: Int) = SharedPrefManager.setCounterView(context, idView)
 
-    private fun incrementView(idView: Int) = SharedPrefManager.incrementCounterDialogView(context, idView)
+    private fun incrementView(idView: Int) =
+        SharedPrefManager.incrementCounterDialogView(context, idView)
 
 }

@@ -33,11 +33,13 @@ class MainView : AppCompatActivity() {
         titulText: String? = null,
         image: Drawable? = null,
         video: String? = null,
+        theme: Drawable?
     ) {
 
         val dialog = BottomSheetDialog(context, R.style.BottomSheetDialog)
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
         dialog.window?.setWindowAnimations(R.style.UserguideDialogAnimation)
+        if (theme != null) dialog.window?.setBackgroundDrawable(theme)
 
         val dialogView = View.inflate(context, R.layout.userguide_dialog_layout, null)
         val animationView: LottieAnimationView = dialogView.findViewById(R.id.anv_true)

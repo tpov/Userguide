@@ -13,39 +13,49 @@ class DotView {
 
     fun showDot(
         item: View,
-        text: String?,
-        titulText: String?,
-        image: Drawable?,
-        video: String?,
+        generalView: Array<out View> = emptyArray(),
+        text: String? = null,
+        titulText: String? = null,
+        image: Drawable? = null,
+        video: String? = null,
         context: Context,
-        callback: (() -> Unit)?,
-        showOriginalView: Boolean
+        callback: (() -> Unit)? = null,
+        showOriginalView: Boolean,
+        theme: Drawable?
     ) {
         val originalForeground = item.foreground ?: ColorDrawable(Color.TRANSPARENT)
         val dotDrawable = DotDrawable(originalForeground)
         var showDialog = true
 
-        item.foreground = dotDrawable
+        val viewsToSetDot = listOf(item) + generalView.toList()
+        viewsToSetDot.forEachIndexed { index, view ->
+            view.foreground = dotDrawable
 
-        item.setOnClickListener {
-            if (!showDialog) {
-                callback?.invoke()
-            } else {
-                SharedPrefManager.incrementCounterDialogView(context, item.id)
-                callback?.invoke()
-                if (text != null) {
-                    MainView().showDialog(
-                        text = text,
-                        titulText = titulText,
-                        image = image,
-                        video = video,
-                        context = context
-                    )
-                }
-                Log.d("osfefjse", "$text")
-                if (showOriginalView) {
-                    item.foreground = originalForeground
-                    showDialog = false
+            item.setOnClickListener {
+                if (view == item || index == 0) {
+                    if (!showDialog) {
+                        callback?.invoke()
+                    } else {
+                        SharedPrefManager.incrementCounterDialogView(context, view.id)
+                        callback?.invoke()
+                        if (text != null) {
+                            MainView().showDialog(
+                                text = text,
+                                titulText = titulText,
+                                image = image,
+                                video = video,
+                                context = context,
+                                theme = theme
+                            )
+                        }
+                        Log.d("osfefjse", "$text")
+                        if (showOriginalView) {
+                            viewsToSetDot.forEach { v ->
+                                v.foreground = originalForeground
+                            }
+                            showDialog = false
+                        }
+                    }
                 }
             }
         }
