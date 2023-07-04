@@ -23,12 +23,13 @@ class DotView {
         showOriginalView: Boolean,
         theme: Drawable?
     ) {
-        val originalForeground = item.foreground ?: ColorDrawable(Color.TRANSPARENT)
-        val dotDrawable = DotDrawable(originalForeground)
+
         var showDialog = true
 
         val viewsToSetDot = listOf(item) + generalView.toList()
         viewsToSetDot.forEachIndexed { index, view ->
+            val originalForeground = view.foreground ?: ColorDrawable(Color.TRANSPARENT)
+            val dotDrawable = DotDrawable(originalForeground)
             view.foreground = dotDrawable
 
             item.setOnClickListener {
