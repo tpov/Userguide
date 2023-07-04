@@ -33,29 +33,27 @@ class DotView {
             view.foreground = dotDrawable
 
             item.setOnClickListener {
-                if (view == item || index == 0) {
-                    if (!showDialog) {
-                        callback?.invoke()
-                    } else {
-                        SharedPrefManager.incrementCounterDialogView(context, view.id)
-                        callback?.invoke()
-                        if (text != null) {
-                            MainView().showDialog(
-                                text = text,
-                                titulText = titulText,
-                                image = image,
-                                video = video,
-                                context = context,
-                                theme = theme
-                            )
+                if (!showDialog) {
+                    callback?.invoke()
+                } else {
+                    SharedPrefManager.incrementCounterDialogView(context, view.id)
+                    callback?.invoke()
+                    if (text != null) {
+                        MainView().showDialog(
+                            text = text,
+                            titulText = titulText,
+                            image = image,
+                            video = video,
+                            context = context,
+                            theme = theme
+                        )
+                    }
+                    Log.d("osfefjse", "$text")
+                    if (showOriginalView) {
+                        viewsToSetDot.forEach { v ->
+                            v.foreground = originalForeground
                         }
-                        Log.d("osfefjse", "$text")
-                        if (showOriginalView) {
-                            viewsToSetDot.forEach { v ->
-                                v.foreground = originalForeground
-                            }
-                            showDialog = false
-                        }
+                        showDialog = false
                     }
                 }
             }
