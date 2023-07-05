@@ -29,23 +29,35 @@ class Userguide(private val context: Context, val theme: Drawable? = null) {
             && (getCounterValue() >= options.countKey || options.countKey == 0)
             && getCounterView(view.id) < options.countRepeat
         ) {
-            val rootView = activity.window.decorView.findViewById<ViewGroup>(android.R.id.content)
-            rootView.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
-                override fun onGlobalLayout() {
-                    Log.d("gfesfse", "fun onGlobalLayout()")
-                    rootView.viewTreeObserver.removeOnGlobalLayoutListener(this)
-                    initDot(
-                        view,
-                        generalView,
-                        text,
-                        titulText,
-                        iconDialog,
-                        video,
-                        callback,
-                        showOriginalView = options.countRepeat - getCounterView(view.id) == 1
-                    )
-                }
-            })
+
+            view.viewTreeObserver.addOnDrawListener {
+                Log.d("gfesfse", "fun onGlobalLayout() 1")
+                initDot(
+                    view,
+                    generalView,
+                    text,
+                    titulText,
+                    iconDialog,
+                    video,
+                    callback,
+                    showOriginalView = options.countRepeat - getCounterView(view.id) == 1
+                )
+            }
+            view.viewTreeObserver.addOnGlobalLayoutListener {
+                Log.d("gfesfse", "fun onGlobalLayout() 2")
+                initDot(
+                    view,
+                    generalView,
+                    text,
+                    titulText,
+                    iconDialog,
+                    video,
+                    callback,
+                    showOriginalView = options.countRepeat - getCounterView(view.id) == 1
+                )
+            }
+
+
         }
     }
 
