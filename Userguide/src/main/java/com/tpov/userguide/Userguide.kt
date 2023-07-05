@@ -90,7 +90,7 @@ class Userguide(private val context: Context, val theme: Drawable? = null) {
     }
 
     private fun initDot(
-        item: View,
+        item: View?,
         generalView: Array<out View> = emptyArray(),
         text: String? = null,
         titulText: String?,

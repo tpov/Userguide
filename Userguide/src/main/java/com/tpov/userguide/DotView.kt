@@ -12,7 +12,7 @@ import android.view.View
 class DotView {
 
     fun showDot(
-        item: View,
+        item: View?,
         generalView: Array<out View> = emptyArray(),
         text: String? = null,
         titulText: String? = null,
@@ -28,11 +28,11 @@ class DotView {
 
         val viewsToSetDot = listOf(item) + generalView.toList()
         viewsToSetDot.forEachIndexed { index, view ->
-            val originalForeground = view.foreground ?: ColorDrawable(Color.TRANSPARENT)
+            val originalForeground = view?.foreground ?: ColorDrawable(Color.TRANSPARENT)
             val dotDrawable = DotDrawable(originalForeground)
-            view.foreground = dotDrawable
+            view?.foreground = dotDrawable
 
-            item.setOnClickListener {
+            item?.setOnClickListener {
                 if (!showDialog) {
                     callback?.invoke()
                 } else {
@@ -51,7 +51,7 @@ class DotView {
                     Log.d("osfefjse", "$text")
                     if (showOriginalView) {
                         viewsToSetDot.forEach { v ->
-                            v.foreground = originalForeground
+                            v?.foreground = originalForeground
                         }
                         showDialog = false
                     }
