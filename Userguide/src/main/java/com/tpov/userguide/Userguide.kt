@@ -4,52 +4,44 @@ import android.app.Activity
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.view.View
+import android.view.ViewTreeObserver
 import androidx.fragment.app.FragmentManager
 
 class Userguide(private val context: Context, val theme: Drawable? = null) {
     private val guideItems: MutableList<GuideItem> = mutableListOf()
 
     fun addGuide(
-        view: View,
+        view: View?,
         text: String,
         titulText: String? = null,
         iconDialog: Drawable? = null,
         video: String? = null,
-        callback: (() -> Unit)? = null, //Укажите код который должен выполнится после нажатия на view, поскольку эта библиотека перехватывает слушатель на view
-        vararg generalView: View = emptyArray(), //Во всех переданных элементах будет отображаться точка пока будет отображаться точка на item
+        callback: (() -> Unit)? = null,
+        vararg generalView: View = emptyArray(),
         options: Options = Options()
     ) {
-        val activity = view.context as? Activity
+        val activity = view?.context as? Activity
 
         if (
             activity != null && !activity.isFinishing
-            && (getCounterValue() >= options.countKey  //Общий ключ > ключ этого гайда или ключ гайда = 0
-                    || options.countKey == 0)
+            && (getCounterValue() >= options.countKey || options.countKey == 0)
             && getCounterView(view.id) < options.countRepeat
         ) {
-            initDot(
-                view,
-                generalView,
-                text,
-                titulText,
-                iconDialog,
-                video,
-                callback,
-                showOriginalView = options.countRepeat - getCounterView(view.id) == 1
-            )
-
-//            val rootView = activity.window.decorView.findViewById<ViewGroup>(android.R.id.content)
-//            rootView.viewTreeObserver.addOnGlobalLayoutListener(object :
-//                ViewTreeObserver.OnGlobalLayoutListener {
-//                override fun onGlobalLayout() {
-//                    rootView.viewTreeObserver.removeOnGlobalLayoutListener(this)
-//                    if (image != null) {
-//                        if (video != null) {
-//                            // Handle image and video case
-//                        }
-//                    }
-//                }
-//            })
+            view.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+                override fun onGlobalLayout() {
+                    view.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                    initDot(
+                        view,
+                        generalView,
+                        text,
+                        titulText,
+                        iconDialog,
+                        video,
+                        callback,
+                        showOriginalView = options.countRepeat - getCounterView(view.id) == 1
+                    )
+                }
+            })
         }
     }
 
