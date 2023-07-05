@@ -3,7 +3,9 @@ package com.tpov.userguide
 import android.app.Activity
 import android.content.Context
 import android.graphics.drawable.Drawable
+import android.util.Log
 import android.view.View
+import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import androidx.fragment.app.FragmentManager
 
@@ -27,9 +29,11 @@ class Userguide(private val context: Context, val theme: Drawable? = null) {
             && (getCounterValue() >= options.countKey || options.countKey == 0)
             && getCounterView(view.id) < options.countRepeat
         ) {
-            view.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+            val rootView = activity.window.decorView.findViewById<ViewGroup>(android.R.id.content)
+            rootView.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
                 override fun onGlobalLayout() {
-                    view.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                    Log.d("gfesfse", "fun onGlobalLayout()")
+                    rootView.viewTreeObserver.removeOnGlobalLayoutListener(this)
                     initDot(
                         view,
                         generalView,
