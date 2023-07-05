@@ -25,8 +25,7 @@ class Userguide(private val context: Context, val theme: Drawable? = null) {
         options: Options = Options()
     ) {
         val activity = view?.context as? Activity
-        view?.viewTreeObserver?.addOnDrawListener {
-            Log.d("gfesfse", "fun onGlobalLayout() 1")
+            Log.d("gfesfse", "fun onGlobalLayout() 14")
             initDot(
                 view,
                 generalView,
@@ -37,7 +36,6 @@ class Userguide(private val context: Context, val theme: Drawable? = null) {
                 callback,
                 showOriginalView = options.countRepeat - getCounterView(view.id) == 1
             )
-        }
         view?.viewTreeObserver?.addOnGlobalLayoutListener {
             Log.d("gfesfse", "fun onGlobalLayout() 2")
             initDot(
