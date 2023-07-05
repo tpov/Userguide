@@ -8,6 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.MutableLiveData
+import kotlin.coroutines.coroutineContext
 
 class Userguide(private val context: Context, val theme: Drawable? = null) {
     private val guideItems: MutableList<GuideItem> = mutableListOf()
@@ -23,13 +25,39 @@ class Userguide(private val context: Context, val theme: Drawable? = null) {
         options: Options = Options()
     ) {
         val activity = view?.context as? Activity
-
+        view?.viewTreeObserver?.addOnDrawListener {
+            Log.d("gfesfse", "fun onGlobalLayout() 1")
+            initDot(
+                view,
+                generalView,
+                text,
+                titulText,
+                iconDialog,
+                video,
+                callback,
+                showOriginalView = options.countRepeat - getCounterView(view.id) == 1
+            )
+        }
+        view?.viewTreeObserver?.addOnGlobalLayoutListener {
+            Log.d("gfesfse", "fun onGlobalLayout() 2")
+            initDot(
+                view,
+                generalView,
+                text,
+                titulText,
+                iconDialog,
+                video,
+                callback,
+                showOriginalView = options.countRepeat - getCounterView(view.id) == 1
+            )
+        }
         if (
             activity != null && !activity.isFinishing
             && (getCounterValue() >= options.countKey || options.countKey == 0)
             && getCounterView(view.id) < options.countRepeat
         ) {
 
+            Log.d("gfesfse", "fun onGlobalLayout() 0")
             view.viewTreeObserver.addOnDrawListener {
                 Log.d("gfesfse", "fun onGlobalLayout() 1")
                 initDot(
