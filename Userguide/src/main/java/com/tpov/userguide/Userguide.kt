@@ -16,7 +16,7 @@ class Userguide(private val context: Context, val theme: Drawable? = null) {
         iconDialog: Drawable? = null,
         video: String? = null,
         callback: (() -> Unit)? = null, //Укажите код который должен выполнится после нажатия на view, поскольку эта библиотека перехватывает слушатель на view
-        vararg generalView: View = emptyArray(), //Во всех переданных элементах будет отображаться точка пока будет отображаться точка на item
+        vararg generalView: View = emptyArray(), //Во всех переданных элементах будет отображаться точка пока будет отображаться точка на view
         options: Options = Options()
     ) {
         val activity = view.context as? Activity
@@ -38,6 +38,7 @@ class Userguide(private val context: Context, val theme: Drawable? = null) {
                 showOriginalView = options.countRepeat - getCounterView(view.id) == 1
             )
 
+            // todo Create listener when view != null
 //            val rootView = activity.window.decorView.findViewById<ViewGroup>(android.R.id.content)
 //            rootView.viewTreeObserver.addOnGlobalLayoutListener(object :
 //                ViewTreeObserver.OnGlobalLayoutListener {
@@ -63,7 +64,18 @@ class Userguide(private val context: Context, val theme: Drawable? = null) {
         callback: (() -> Unit)?,
         showOriginalView: Boolean
     ) {
-        DotView().showDot(item, generalView, text, titulText, image, video, context, callback, showOriginalView, theme)
+        DotView().showDot(
+            item,
+            generalView,
+            text,
+            titulText,
+            image,
+            video,
+            context,
+            callback,
+            showOriginalView,
+            theme
+        )
 
         val guideItem = GuideItem(item, text, image, video)
         guideItems.add(guideItem)
@@ -89,7 +101,12 @@ class Userguide(private val context: Context, val theme: Drawable? = null) {
         video: String? = null,
         options: Options = Options()
     ) {
-        if (getCounterView(0) < options.countRepeat) {
+        val packageName = context.applicationContext.packageName
+        val packageManager = context.applicationContext.packageManager
+        val packageInfo = packageManager.getPackageInfo(packageName, 0)
+        val versionCode = packageInfo.versionCode
+
+        if (getCounterView(0) < options.countRepeat && (options.countKeyVersion == versionCode || options.countKeyVersion == 0)) {
             MainView().showDialog(
                 text = text,
                 titulText = titulText,
@@ -104,12 +121,12 @@ class Userguide(private val context: Context, val theme: Drawable? = null) {
 
     fun addNotification(
         text: String,
-        key: Int = 0,
+        options: Options = Options(),
         titulText: String? = null,
         image: Drawable? = null,
         video: String? = null
     ) {
-        if (key == getCounterValue() && key == 0) {
+        if (options.countKey == getCounterValue() && options.countKey == 0 ) {
             MainView().showDialog(
                 text = text,
                 titulText = titulText,
