@@ -71,17 +71,15 @@ class UserGuide(private val context: Context, private val theme: Drawable? = nul
 
         Log.d("dwwdwdwd", "1")
         if (
-            activity != null && !activity.isFinishing
-            && (getCounterValue() >= options.countKey  //Общий ключ > ключ этого гайда или ключ гайда = 0
+            (getCounterValue() >= options.countKey  //Общий ключ > ключ этого гайда или ключ гайда = 0
                     || options.countKey == 0)
-            && getCounterView(view.id) < options.countRepeat
+
         ) {
-
-
             // todo Create listener when view != null
-            view.viewTreeObserver.addOnGlobalLayoutListener(object :
+            view?.viewTreeObserver?.addOnGlobalLayoutListener(object :
                 ViewTreeObserver.OnGlobalLayoutListener {
                 override fun onGlobalLayout() {
+                    if (getCounterView(view.id) < options.countRepeat) {
                     // Удалите слушателя, чтобы не вызывать его снова
                     view.viewTreeObserver.removeOnGlobalLayoutListener(this)
                     Log.d("dwwdwdwd", "2")
@@ -95,7 +93,7 @@ class UserGuide(private val context: Context, private val theme: Drawable? = nul
                         callback,
                         showOriginalView = options.countRepeat - getCounterView(view.id) == 1
                     )
-                }
+                }}
             })
         }
     }
