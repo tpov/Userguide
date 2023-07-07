@@ -136,7 +136,7 @@ class UserGuide(private val context: Context, private val theme: Drawable? = nul
             DotView().showDot(item, context = context, showOriginalView = true, theme = theme)
             incrementView(item.id)
         }
-    }icon
+    }
     fun addGuideNewVersion(
         text: String,
         titul: String? = null,
