@@ -24,11 +24,11 @@ import kotlin.coroutines.coroutineContext
  * ║                               ║
  * ║   ┌────────┬──────────────┐   ║
  * ║   │        │              │   ║
- * ║   │ *icon* │  *text*      │   ║
+ * ║   │ *icon* │    *text*    │   ║
  * ║   │        │              │   ║
  * ║   └────────┴──────────────┘   ║
  * ║   ┌────────┬──────────────┐   ║
- * ║   │ *Button│    *Button   │   ║
+ * ║   │ *Button│   *Button    │   ║
  * ║   │ open   │     Ok*      │   ║
  * ║   │ video* │              │   ║
  * ║   └────────┴──────────────┘   ║
@@ -67,33 +67,36 @@ class UserGuide(private val context: Context, private val theme: Drawable? = nul
         vararg generalView: View = emptyArray(),
         options: Options = Options()
     ) {
-        val activity = view?.context as? Activity
 
         Log.d("dwwdwdwd", "1")
         if (
             (getCounterValue() >= options.countKey  //Общий ключ > ключ этого гайда или ключ гайда = 0
                     || options.countKey == 0)
-
         ) {
             // todo Create listener when view != null
-            view?.viewTreeObserver?.addOnGlobalLayoutListener(object :
-                ViewTreeObserver.OnGlobalLayoutListener {
-                override fun onGlobalLayout() {
-                    if (getCounterView(view.id) < options.countRepeat) {
+            view?.addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
+                override fun onViewAttachedToWindow(v: View) {
                     // Удалите слушателя, чтобы не вызывать его снова
-                    view.viewTreeObserver.removeOnGlobalLayoutListener(this)
-                    Log.d("dwwdwdwd", "2")
-                    initDot(
-                        view,
-                        generalView,
-                        text,
-                        titul,
-                        icon,
-                        video,
-                        callback,
-                        showOriginalView = options.countRepeat - getCounterView(view.id) == 1
-                    )
-                }}
+                    view.removeOnAttachStateChangeListener(this)
+
+                    if (getCounterView(view.id) < options.countRepeat) {
+                        Log.d("dwwdwdwd", "2")
+                        initDot(
+                            view,
+                            generalView,
+                            text,
+                            titul,
+                            icon,
+                            video,
+                            callback,
+                            showOriginalView = options.countRepeat - getCounterView(view.id) == 1
+                        )
+                    }
+                }
+
+                override fun onViewDetachedFromWindow(v: View) {
+                    // Здесь можно выполнить дополнительные действия, если необходимо
+                }
             })
         }
     }
