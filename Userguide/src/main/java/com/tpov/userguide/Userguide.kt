@@ -3,54 +3,96 @@ package com.tpov.userguide
 import android.app.Activity
 import android.content.Context
 import android.graphics.drawable.Drawable
+import android.util.Log
 import android.view.View
+import android.view.ViewTreeObserver
 import androidx.fragment.app.FragmentManager
 
-class Userguide(private val context: Context, val theme: Drawable? = null) {
+/**
+ * This library is designed to simplify the use of applications for users,
+ * Its functionality is based on drawing a point on the element, and displaying a dialog box that slides out from below.
+ *
+ * The library contains some functions that allow you to use the dialog box as a regular Alert.dialog,
+ * calling it in one line, with different parameters
+ *
+ * ╔═══════════════════════════════╗
+ * ║                               ║
+ * ║              Titul            ║
+ * ║                               ║
+ * ║   ┌────────┬──────────────┐   ║
+ * ║   │        │              │   ║
+ * ║   │ *icon* │  *text*      │   ║
+ * ║   │        │              │   ║
+ * ║   └────────┴──────────────┘   ║
+ * ║   ┌────────┬──────────────┐   ║
+ * ║   │ *Button│    *Button   │   ║
+ * ║   │ open   │     Ok*      │   ║
+ * ║   │ video* │              │   ║
+ * ║   └────────┴──────────────┘   ║
+ * ║                               ║
+ * ╚═══════════════════════════════╝
+ *
+ * @param context context to display the dialog box
+ * @param theme Theme for dialog box
+ */
+
+class UserGuide(private val context: Context, private val theme: Drawable? = null) {
     private val guideItems: MutableList<GuideItem> = mutableListOf()
 
+    /**
+     * Adds a point on the view element, then after clicking on the view - the "callback" code is executed
+     * and displays a dialog box with the contents
+     *
+     * @param view The View element to which the tutorial will be applied.
+     * @param text Manual text.
+     * @param titul Title guide.
+     * @param icon icon that will be next to the text of the manual.
+     * @param video Video that will be next to the text of the manual.
+     * @param callback Note that this library intercepts all listeners that contain the view element,
+     * For this, the callback parameter has been created,
+     * The callback function will be called after clicking on the View element.
+     *
+     * @param options Other settings for the appearance of the guide.
+     */
     fun addGuide(
         view: View,
         text: String,
-        titulText: String? = null,
-        iconDialog: Drawable? = null,
+        titul: String? = null,
+        icon: Drawable? = null,
         video: String? = null,
-        callback: (() -> Unit)? = null, //Укажите код который должен выполнится после нажатия на view, поскольку эта библиотека перехватывает слушатель на view
-        vararg generalView: View = emptyArray(), //Во всех переданных элементах будет отображаться точка пока будет отображаться точка на view
+        callback: (() -> Unit)? = null,
+        vararg generalView: View = emptyArray(),
         options: Options = Options()
     ) {
         val activity = view.context as? Activity
 
+        Log.d("dwwdwdwd", "1")
         if (
             activity != null && !activity.isFinishing
             && (getCounterValue() >= options.countKey  //Общий ключ > ключ этого гайда или ключ гайда = 0
                     || options.countKey == 0)
             && getCounterView(view.id) < options.countRepeat
         ) {
-            initDot(
-                view,
-                generalView,
-                text,
-                titulText,
-                iconDialog,
-                video,
-                callback,
-                showOriginalView = options.countRepeat - getCounterView(view.id) == 1
-            )
+
 
             // todo Create listener when view != null
-//            val rootView = activity.window.decorView.findViewById<ViewGroup>(android.R.id.content)
-//            rootView.viewTreeObserver.addOnGlobalLayoutListener(object :
-//                ViewTreeObserver.OnGlobalLayoutListener {
-//                override fun onGlobalLayout() {
-//                    rootView.viewTreeObserver.removeOnGlobalLayoutListener(this)
-//                    if (image != null) {
-//                        if (video != null) {
-//                            // Handle image and video case
-//                        }
-//                    }
-//                }
-//            })
+            view.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+                override fun onGlobalLayout() {
+                    // Удалите слушателя, чтобы не вызывать его снова
+                    view.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                    Log.d("dwwdwdwd", "2")
+                    initDot(
+                        view,
+                        generalView,
+                        text,
+                        titul,
+                        icon,
+                        video,
+                        callback,
+                        showOriginalView = options.countRepeat - getCounterView(view.id) == 1
+                    )
+                }
+            })
         }
     }
 
@@ -84,7 +126,9 @@ class Userguide(private val context: Context, val theme: Drawable? = null) {
     private fun getAllGuideItems(): List<GuideItem> {
         return guideItems.toList()
     }
-
+    /**
+     * Displays only a point without a dialog box appearing
+     */
     fun addOnlyDot(
         item: View
     ) {
@@ -92,12 +136,11 @@ class Userguide(private val context: Context, val theme: Drawable? = null) {
             DotView().showDot(item, context = context, showOriginalView = true, theme = theme)
             incrementView(item.id)
         }
-    }
-
+    }icon
     fun addGuideNewVersion(
         text: String,
-        titulText: String? = null,
-        image: Drawable? = null,
+        titul: String? = null,
+        icon: Drawable? = null,
         video: String? = null,
         options: Options = Options()
     ) {
@@ -109,8 +152,8 @@ class Userguide(private val context: Context, val theme: Drawable? = null) {
         if (getCounterView(0) < options.countRepeat && (options.countKeyVersion == versionCode || options.countKeyVersion == 0)) {
             MainView().showDialog(
                 text = text,
-                titulText = titulText,
-                image = image,
+                titulText = titul,
+                image = icon,
                 video = video,
                 context = context,
                 theme = theme
