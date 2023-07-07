@@ -76,11 +76,11 @@ class UserGuide(private val context: Context, private val theme: Drawable? = nul
             // todo Create listener when view != null
             view?.addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
                 override fun onViewAttachedToWindow(v: View) {
-                    // Удалите слушателя, чтобы не вызывать его снова
+                    Log.d("dwwdwdwd", "2")
                     view.removeOnAttachStateChangeListener(this)
 
                     if (getCounterView(view.id) < options.countRepeat) {
-                        Log.d("dwwdwdwd", "2")
+                        Log.d("dwwdwdwd", "3")
                         initDot(
                             view,
                             generalView,
