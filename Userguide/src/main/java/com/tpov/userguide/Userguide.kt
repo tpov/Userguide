@@ -1,15 +1,10 @@
 package com.tpov.userguide
 
-import android.app.Activity
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.View
-import android.view.ViewGroup
-import android.view.ViewTreeObserver
 import androidx.fragment.app.FragmentManager
-import androidx.lifecycle.MutableLiveData
-import kotlin.coroutines.coroutineContext
 
 /**
  * This library is designed to simplify the use of applications for users,
@@ -20,7 +15,7 @@ import kotlin.coroutines.coroutineContext
  *
  * ╔═══════════════════════════════╗
  * ║                               ║
- * ║              Titul            ║
+ * ║              Title            ║
  * ║                               ║
  * ║   ┌────────┬──────────────┐   ║
  * ║   │        │              │   ║
@@ -48,7 +43,7 @@ class UserGuide(private val context: Context, private val theme: Drawable? = nul
      *
      * @param view The View element to which the tutorial will be applied.
      * @param text Manual text.
-     * @param titul Title guide.
+     * @param titleText Title guide.
      * @param icon icon that will be next to the text of the manual.
      * @param video Video that will be next to the text of the manual.
      * @param callback Note that this library intercepts all listeners that contain the view element,
@@ -60,7 +55,7 @@ class UserGuide(private val context: Context, private val theme: Drawable? = nul
     fun addGuide(
         view: View?,
         text: String,
-        titul: String? = null,
+        titleText: String? = null,
         icon: Drawable? = null,
         video: String? = null,
         callback: (() -> Unit)? = null,
@@ -85,7 +80,7 @@ class UserGuide(private val context: Context, private val theme: Drawable? = nul
                         view,
                         generalView,
                         text,
-                        titul,
+                        titleText,
                         icon,
                         video,
                         callback,
@@ -104,7 +99,7 @@ class UserGuide(private val context: Context, private val theme: Drawable? = nul
         item: View?,
         generalView: Array<out View> = emptyArray(),
         text: String? = null,
-        titulText: String?,
+        titleText: String?,
         image: Drawable?,
         video: String?,
         callback: (() -> Unit)?,
@@ -114,7 +109,7 @@ class UserGuide(private val context: Context, private val theme: Drawable? = nul
             item,
             generalView,
             text,
-            titulText,
+            titleText,
             image,
             video,
             context,
@@ -147,10 +142,22 @@ class UserGuide(private val context: Context, private val theme: Drawable? = nul
             incrementView(item.id)
         }
     }
-
+    /**
+     * This method calls the dialog immediately after it is called,
+     * by default it is called only once.
+     *
+     * @param text Manual text.
+     * @param titleText Title guide.
+     * @param icon icon that will be next to the text of the manual.
+     * @param video Video that will be next to the text of the manual.
+     * @param callback Note that this library intercepts all listeners that contain the view element,
+     * For this, the callback parameter has been created,
+     * The callback function will be called after clicking on the View element.
+     * @param options Additional options for displaying this dialog
+     */
     fun addGuideNewVersion(
         text: String,
-        titul: String? = null,
+        titleText: String? = null,
         icon: Drawable? = null,
         video: String? = null,
         options: Options = Options()
@@ -163,7 +170,7 @@ class UserGuide(private val context: Context, private val theme: Drawable? = nul
         if (getCounterView(0) < options.countRepeat && (options.countKeyVersion == versionCode || options.countKeyVersion == 0)) {
             MainView().showDialog(
                 text = text,
-                titulText = titul,
+                titulText = titleText,
                 image = icon,
                 video = video,
                 context = context,
@@ -173,18 +180,27 @@ class UserGuide(private val context: Context, private val theme: Drawable? = nul
         }
     }
 
+    /**
+     * Just display a dialog with options
+     *
+     * @param text Manual text.
+     * @param options Additional options for displaying this dialog
+     * @param titleText Title guide.
+     * @param icon icon that will be next to the text of the manual.
+     * @param video Video that will be next to the text of the manual.
+     */
     fun addNotification(
         text: String,
         options: Options = Options(),
-        titulText: String? = null,
-        image: Drawable? = null,
+        titleText: String? = null,
+        icon: Drawable? = null,
         video: String? = null
     ) {
         if (options.countKey == getCounterValue() && options.countKey == 0) {
             MainView().showDialog(
                 text = text,
-                titulText = titulText,
-                image = image,
+                titulText = titleText,
+                image = icon,
                 video = video,
                 context = context,
                 theme = theme
@@ -192,6 +208,41 @@ class UserGuide(private val context: Context, private val theme: Drawable? = nul
         }
     }
 
+    /**
+     * Display a full-screen dialog box that will display a list of all the guides that the user has seen.
+     * The list of guides to display is taken from the addGuide methods
+     *
+     * ╔═══════════════════════════════════════════════╗
+     * ║                                               ║
+     * ║   ╔═══════════════════════════════════════╗   ║
+     * ║   ║                Guide1                 ║   ║
+     * ║   ║   ┌────────┬───────────┐──────────┐   ║   ║
+     * ║   ║   │        │           │          │   ║   ║
+     * ║   ║   │ *icon* │   *text*  │  *video* │   ║   ║
+     * ║   ║   │        │           │          │   ║   ║
+     * ║   ║   └────────┴───────────┘──────────┘   ║   ║
+     * ║   ╚═══════════════════════════════════════╝   ║
+     * ║   ╔═══════════════════════════════════════╗   ║
+     * ║   ║                Guide2                 ║   ║
+     * ║   ║   ┌────────┬───────────┐──────────┐   ║   ║
+     * ║   ║   │        │           │          │   ║   ║
+     * ║   ║   │ *icon* │   *text*  │  *video* │   ║   ║
+     * ║   ║   │        │           │          │   ║   ║
+     * ║   ║   └────────┴───────────┘──────────┘   ║   ║
+     * ║   ╚═══════════════════════════════════════╝   ║
+     * ║   ╔═══════════════════════════════════════╗   ║
+     * ║   ║                Guide3                 ║   ║
+     * ║   ║   ┌────────┬───────────┐──────────┐   ║   ║
+     * ║   ║   │        │           │          │   ║   ║
+     * ║   ║   │ *icon* │   *text*  │  *video* │   ║   ║
+     * ║   ║   │        │           │          │   ║   ║
+     * ║   ║   └────────┴───────────┘──────────┘   ║   ║
+     * ║   ╚═══════════════════════════════════════╝   ║
+     * ║                                               ║
+     * ╚═══════════════════════════════════════════════╝
+     *
+     * @param text Manual text.
+     */
     fun showInfoFragment(text: String, fragmentManager: FragmentManager) {
         val fragment = InfoFragment.newInstance(getAllGuideItems().toList())
         fragmentManager.beginTransaction()
@@ -200,11 +251,18 @@ class UserGuide(private val context: Context, private val theme: Drawable? = nul
             .commit()
     }
 
-    //count++
+    /**
+     * This method increases the counter by 1,
+     * the counter is needed in order to display all the guides that have a countKey >= of this number
+     */
     fun setCounterValue() {
         SharedPrefManager.incrementCounter(context)
     }
 
+    /**
+     * This method sets the number you need,
+     * a counter is needed to display all guides that have a countKey >= of this number
+     */
     fun setCounterValue(count: Int) {
         SharedPrefManager.setCounter(context, count)
     }
