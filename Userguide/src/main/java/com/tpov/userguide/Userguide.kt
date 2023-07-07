@@ -67,7 +67,7 @@ class UserGuide(private val context: Context, private val theme: Drawable? = nul
         vararg generalView: View = emptyArray(),
         options: Options = Options()
     ) {
-        val activity = view.context as? Activity
+        val activity = view?.context as? Activity
 
         Log.d("dwwdwdwd", "1")
         if (
@@ -79,7 +79,8 @@ class UserGuide(private val context: Context, private val theme: Drawable? = nul
 
 
             // todo Create listener when view != null
-            view.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+            view.viewTreeObserver.addOnGlobalLayoutListener(object :
+                ViewTreeObserver.OnGlobalLayoutListener {
                 override fun onGlobalLayout() {
                     // Удалите слушателя, чтобы не вызывать его снова
                     view.viewTreeObserver.removeOnGlobalLayoutListener(this)
@@ -96,66 +97,6 @@ class UserGuide(private val context: Context, private val theme: Drawable? = nul
                     )
                 }
             })
-        val activity = view?.context as? Activity
-            Log.d("gfesfse", "fun onGlobalLayout() 14")
-            initDot(
-                view,
-                generalView,
-                text,
-                titulText,
-                iconDialog,
-                video,
-                callback,
-                showOriginalView = options.countRepeat - getCounterView(view.id) == 1
-            )
-        view?.viewTreeObserver?.addOnGlobalLayoutListener {
-            Log.d("gfesfse", "fun onGlobalLayout() 2")
-            initDot(
-                view,
-                generalView,
-                text,
-                titulText,
-                iconDialog,
-                video,
-                callback,
-                showOriginalView = options.countRepeat - getCounterView(view.id) == 1
-            )
-        }
-        if (
-            activity != null && !activity.isFinishing
-            && (getCounterValue() >= options.countKey || options.countKey == 0)
-            && getCounterView(view.id) < options.countRepeat
-        ) {
-
-            Log.d("gfesfse", "fun onGlobalLayout() 0")
-            view.viewTreeObserver.addOnDrawListener {
-                Log.d("gfesfse", "fun onGlobalLayout() 1")
-                initDot(
-                    view,
-                    generalView,
-                    text,
-                    titulText,
-                    iconDialog,
-                    video,
-                    callback,
-                    showOriginalView = options.countRepeat - getCounterView(view.id) == 1
-                )
-            }
-            view.viewTreeObserver.addOnGlobalLayoutListener {
-                Log.d("gfesfse", "fun onGlobalLayout() 2")
-                initDot(
-                    view,
-                    generalView,
-                    text,
-                    titulText,
-                    iconDialog,
-                    video,
-                    callback,
-                    showOriginalView = options.countRepeat - getCounterView(view.id) == 1
-                )
-            }
-
-
         }
     }
 
@@ -189,6 +130,7 @@ class UserGuide(private val context: Context, private val theme: Drawable? = nul
     private fun getAllGuideItems(): List<GuideItem> {
         return guideItems.toList()
     }
+
     /**
      * Displays only a point without a dialog box appearing
      */
@@ -200,6 +142,7 @@ class UserGuide(private val context: Context, private val theme: Drawable? = nul
             incrementView(item.id)
         }
     }
+
     fun addGuideNewVersion(
         text: String,
         titul: String? = null,
@@ -232,7 +175,7 @@ class UserGuide(private val context: Context, private val theme: Drawable? = nul
         image: Drawable? = null,
         video: String? = null
     ) {
-        if (options.countKey == getCounterValue() && options.countKey == 0 ) {
+        if (options.countKey == getCounterValue() && options.countKey == 0) {
             MainView().showDialog(
                 text = text,
                 titulText = titulText,
