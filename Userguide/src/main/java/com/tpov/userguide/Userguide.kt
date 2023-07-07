@@ -5,8 +5,11 @@ import android.content.Context
 import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.MutableLiveData
+import kotlin.coroutines.coroutineContext
 
 /**
  * This library is designed to simplify the use of applications for users,
@@ -55,7 +58,7 @@ class UserGuide(private val context: Context, private val theme: Drawable? = nul
      * @param options Other settings for the appearance of the guide.
      */
     fun addGuide(
-        view: View,
+        view: View?,
         text: String,
         titul: String? = null,
         icon: Drawable? = null,
@@ -93,11 +96,71 @@ class UserGuide(private val context: Context, private val theme: Drawable? = nul
                     )
                 }
             })
+        val activity = view?.context as? Activity
+            Log.d("gfesfse", "fun onGlobalLayout() 14")
+            initDot(
+                view,
+                generalView,
+                text,
+                titulText,
+                iconDialog,
+                video,
+                callback,
+                showOriginalView = options.countRepeat - getCounterView(view.id) == 1
+            )
+        view?.viewTreeObserver?.addOnGlobalLayoutListener {
+            Log.d("gfesfse", "fun onGlobalLayout() 2")
+            initDot(
+                view,
+                generalView,
+                text,
+                titulText,
+                iconDialog,
+                video,
+                callback,
+                showOriginalView = options.countRepeat - getCounterView(view.id) == 1
+            )
+        }
+        if (
+            activity != null && !activity.isFinishing
+            && (getCounterValue() >= options.countKey || options.countKey == 0)
+            && getCounterView(view.id) < options.countRepeat
+        ) {
+
+            Log.d("gfesfse", "fun onGlobalLayout() 0")
+            view.viewTreeObserver.addOnDrawListener {
+                Log.d("gfesfse", "fun onGlobalLayout() 1")
+                initDot(
+                    view,
+                    generalView,
+                    text,
+                    titulText,
+                    iconDialog,
+                    video,
+                    callback,
+                    showOriginalView = options.countRepeat - getCounterView(view.id) == 1
+                )
+            }
+            view.viewTreeObserver.addOnGlobalLayoutListener {
+                Log.d("gfesfse", "fun onGlobalLayout() 2")
+                initDot(
+                    view,
+                    generalView,
+                    text,
+                    titulText,
+                    iconDialog,
+                    video,
+                    callback,
+                    showOriginalView = options.countRepeat - getCounterView(view.id) == 1
+                )
+            }
+
+
         }
     }
 
     private fun initDot(
-        item: View,
+        item: View?,
         generalView: Array<out View> = emptyArray(),
         text: String? = null,
         titulText: String?,
@@ -136,7 +199,7 @@ class UserGuide(private val context: Context, private val theme: Drawable? = nul
             DotView().showDot(item, context = context, showOriginalView = true, theme = theme)
             incrementView(item.id)
         }
-    }icon
+    }
     fun addGuideNewVersion(
         text: String,
         titul: String? = null,
