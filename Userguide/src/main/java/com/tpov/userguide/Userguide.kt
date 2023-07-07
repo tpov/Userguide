@@ -72,6 +72,7 @@ class UserGuide(private val context: Context, private val theme: Drawable? = nul
         if (
             (getCounterValue() >= options.countKey  //Общий ключ > ключ этого гайда или ключ гайда = 0
                     || options.countKey == 0)
+                    || getCounterView(view?.id) < options.countRepeat
         ) {
             // todo Create listener when view != null
             view?.addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
@@ -79,19 +80,17 @@ class UserGuide(private val context: Context, private val theme: Drawable? = nul
                     Log.d("dwwdwdwd", "2")
                     view.removeOnAttachStateChangeListener(this)
 
-                    if (getCounterView(view.id) < options.countRepeat) {
-                        Log.d("dwwdwdwd", "3")
-                        initDot(
-                            view,
-                            generalView,
-                            text,
-                            titul,
-                            icon,
-                            video,
-                            callback,
-                            showOriginalView = options.countRepeat - getCounterView(view.id) == 1
-                        )
-                    }
+                    Log.d("dwwdwdwd", "3")
+                    initDot(
+                        view,
+                        generalView,
+                        text,
+                        titul,
+                        icon,
+                        video,
+                        callback,
+                        options
+                    )
                 }
 
                 override fun onViewDetachedFromWindow(v: View) {
@@ -109,7 +108,7 @@ class UserGuide(private val context: Context, private val theme: Drawable? = nul
         image: Drawable?,
         video: String?,
         callback: (() -> Unit)?,
-        showOriginalView: Boolean
+        options: Options
     ) {
         DotView().showDot(
             item,
@@ -120,7 +119,7 @@ class UserGuide(private val context: Context, private val theme: Drawable? = nul
             video,
             context,
             callback,
-            showOriginalView,
+            options,
             theme
         )
 
@@ -139,7 +138,12 @@ class UserGuide(private val context: Context, private val theme: Drawable? = nul
         item: View
     ) {
         if (getCounterView(item.id) == 0) {
-            DotView().showDot(item, context = context, showOriginalView = true, theme = theme)
+            DotView().showDot(
+                item,
+                context = context,
+                options = Options(countRepeat = 1),
+                theme = theme
+            )
             incrementView(item.id)
         }
     }
@@ -209,7 +213,7 @@ class UserGuide(private val context: Context, private val theme: Drawable? = nul
         return SharedPrefManager.getCounter(context)
     }
 
-    private fun getCounterView(idView: Int) = SharedPrefManager.getCounterView(context, idView)
+    private fun getCounterView(idView: Int?) = SharedPrefManager.getCounterView(context, idView)
 
     private fun setCounterView(idView: Int) = SharedPrefManager.setCounterView(context, idView)
 

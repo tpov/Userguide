@@ -8,6 +8,7 @@ import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.View
+import com.tpov.userguide.SharedPrefManager.getCounterView
 
 class DotView {
 
@@ -20,7 +21,7 @@ class DotView {
         video: String? = null,
         context: Context,
         callback: (() -> Unit)? = null,
-        showOriginalView: Boolean,
+        options: Options,
         theme: Drawable?
     ) {
 
@@ -49,7 +50,11 @@ class DotView {
                         )
                     }
                     Log.d("osfefjse", "$text")
-                    if (showOriginalView) {
+                    if (options.countRepeat - getCounterView(
+                            context,
+                            view!!.id
+                        ) == 1 || options.countRepeat == 1
+                    ) {
                         viewsToSetDot.forEach { v ->
                             v?.foreground = originalForeground
                         }

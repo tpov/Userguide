@@ -25,7 +25,7 @@ object SharedPrefManager {
         sharedPreferences.edit().putInt(this.PREF_COUNTER, count).apply()
     }
 
-    fun getCounterView(context: Context, idView: Int): Int {
+    fun getCounterView(context: Context, idView: Int?): Int {
         val sharedPreferences = context.getSharedPreferences(this.PREF_KEY_COUNTER_VIEW, Context.MODE_PRIVATE)
         return sharedPreferences.getInt(idView.toString(), 0)
     }
