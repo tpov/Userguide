@@ -2,8 +2,10 @@ package com.tpov.userguide
 
 import android.app.Dialog
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
@@ -23,6 +25,7 @@ import com.airbnb.lottie.LottieAnimationView
 import com.airbnb.lottie.LottieDrawable
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
+
 
 @UnstableApi //This is main dialog show information for user
 class MainView : AppCompatActivity() {
@@ -87,7 +90,11 @@ class MainView : AppCompatActivity() {
 
         val videoView = dialog.findViewById<PlayerView>(R.id.playerView)
 
-        initializePlayer(context, videoView, video)
+        //initializePlayer(context, videoView, video)
+
+        val i = Intent(Intent.ACTION_VIEW)
+        i.data = Uri.parse(video)
+        startActivity(i)
 
         val layoutParams = WindowManager.LayoutParams().apply {
             copyFrom(dialog.window?.attributes)

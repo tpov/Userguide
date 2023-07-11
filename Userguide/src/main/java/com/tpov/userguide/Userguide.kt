@@ -63,19 +63,16 @@ class UserGuide(private val context: Context, private val theme: Drawable? = nul
         options: Options = Options()
     ) {
 
-        Log.d("dwwdwdwd", "1")
         if (
-            (getCounterValue() >= options.countKey  //Общий ключ > ключ этого гайда или ключ гайда = 0
+            (getCounterValue() >= options.countKey
                     || options.countKey == 0)
-                    || getCounterView(view?.id) < options.countRepeat
+            && getCounterView(view?.id) < options.countRepeat
         ) {
             // todo Create listener when view != null
             view?.addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
                 override fun onViewAttachedToWindow(v: View) {
-                    Log.d("dwwdwdwd", "2")
                     view.removeOnAttachStateChangeListener(this)
 
-                    Log.d("dwwdwdwd", "3")
                     initDot(
                         view,
                         generalView,
@@ -89,7 +86,6 @@ class UserGuide(private val context: Context, private val theme: Drawable? = nul
                 }
 
                 override fun onViewDetachedFromWindow(v: View) {
-                    // Здесь можно выполнить дополнительные действия, если необходимо
                 }
             })
         }
