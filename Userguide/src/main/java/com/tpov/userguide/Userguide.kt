@@ -111,7 +111,10 @@ class UserGuide(private val context: Context, private val theme: Drawable? = nul
             context,
             callback,
             options,
-            theme
+            theme,
+            buttonClick = {
+                incrementView(it)
+            }
         )
 
         val guideItem = GuideItem(item, text, image, video)
@@ -172,7 +175,6 @@ class UserGuide(private val context: Context, private val theme: Drawable? = nul
                 context = context,
                 theme = theme
             )
-            incrementView(0)
         }
     }
 

@@ -22,7 +22,8 @@ class DotView {
         context: Context,
         callback: (() -> Unit)? = null,
         options: Options,
-        theme: Drawable?
+        theme: Drawable?,
+        buttonClick: (Int) -> (Unit)
     ) {
 
         var showDialog = true
@@ -46,7 +47,9 @@ class DotView {
                             image = image,
                             video = video,
                             context = context,
-                            theme = theme
+                            theme = theme,
+                            item = item,
+                            buttonClick
                         )
                     }
                     Log.d("osfefjse", "$text")
