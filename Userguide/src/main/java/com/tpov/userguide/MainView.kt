@@ -2,8 +2,11 @@ package com.tpov.userguide
 
 import android.app.Dialog
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.Drawable
+import android.media.Image
+import android.net.Uri
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
@@ -24,6 +27,7 @@ import com.airbnb.lottie.LottieDrawable
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
+
 @UnstableApi //This is main dialog show information for user
 class MainView : AppCompatActivity() {
 
@@ -33,24 +37,24 @@ class MainView : AppCompatActivity() {
         titulText: String? = null,
         image: Drawable? = null,
         video: String? = null,
-        theme: Drawable?
+        theme: Drawable?,
+        item: View? = null,
+        clickButton: (Int) -> (Unit)
     ) {
-
         val dialog = BottomSheetDialog(context, R.style.BottomSheetDialog)
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
         dialog.window?.setWindowAnimations(R.style.UserguideDialogAnimation)
         if (theme != null) dialog.window?.setBackgroundDrawable(theme)
 
         val dialogView = View.inflate(context, R.layout.userguide_dialog_layout, null)
-        val animationView: LottieAnimationView = dialogView.findViewById(R.id.anv_true)
+        val animationView = dialogView.findViewById<ImageView>(R.id.imv_ok)
         val videoIcon = dialogView.findViewById<ImageView>(R.id.imv_video)
 
-        animationView.setAnimation("tick.json")
-        animationView.playAnimation()
-        animationView.repeatCount = LottieDrawable.INFINITE
         animationView.setOnClickListener {
+            clickButton(item?.id ?: 0)
             dialog.dismiss()
         }
+
         val container =
             dialog.findViewById<FrameLayout>(com.google.android.material.R.id.design_bottom_sheet)?.parent as? View
         container?.setBackgroundColor(Color.TRANSPARENT)
@@ -79,49 +83,7 @@ class MainView : AppCompatActivity() {
     }
 
     private fun showVideoDialog(video: String, context: Context) {
-        val dialog = Dialog(context, android.R.style.Theme_Black_NoTitleBar_Fullscreen)
-        dialog.setContentView(R.layout.dialog_video)
-        dialog.setCancelable(true)
-
-        dialog.show()
-
-        val videoView = dialog.findViewById<PlayerView>(R.id.playerView)
-
-        initializePlayer(context, videoView, video)
-
-        val layoutParams = WindowManager.LayoutParams().apply {
-            copyFrom(dialog.window?.attributes)
-            width = ViewGroup.LayoutParams.MATCH_PARENT
-            height = ViewGroup.LayoutParams.MATCH_PARENT
-        }
-        dialog.window?.attributes = layoutParams
-    }
-
-    private fun initializePlayer(context: Context, videoView: PlayerView, video: String) {
-        val player = ExoPlayer.Builder(context) // <- context
-            .build()
-
-        // create a media item.
-        val mediaItem = MediaItem.Builder()
-            .setUri(video)
-            .setMimeType(MimeTypes.APPLICATION_MP4)
-            .build()
-
-        // Create a media source and pass the media item
-        val mediaSource = ProgressiveMediaSource.Factory(
-            DefaultDataSource.Factory(context) // <- context
-        )
-            .createMediaSource(mediaItem)
-
-        // Finally assign this media source to the player
-        player.apply {
-            setMediaSource(mediaSource)
-            playWhenReady = true // start playing when the exoplayer has setup
-            seekTo(0, 0L) // Start from the beginning
-            prepare() // Change the state from idle.
-        }.also {
-            // Do not forget to attach the player to the view
-            videoView.player = it
-        }
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(video))
+        context.startActivity(intent)
     }
 }
