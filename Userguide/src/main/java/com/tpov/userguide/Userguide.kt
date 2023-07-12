@@ -136,7 +136,10 @@ class UserGuide(private val context: Context, private val theme: Drawable? = nul
                 item,
                 context = context,
                 options = Options(countRepeat = 1),
-                theme = theme
+                theme = theme,
+                buttonClick = {
+                    incrementView(it)
+                }
             )
             incrementView(item.id)
         }
@@ -159,7 +162,8 @@ class UserGuide(private val context: Context, private val theme: Drawable? = nul
         titleText: String? = null,
         icon: Drawable? = null,
         video: String? = null,
-        options: Options = Options()
+        options: Options = Options(),
+
     ) {
         val packageName = context.applicationContext.packageName
         val packageManager = context.applicationContext.packageManager
@@ -173,7 +177,10 @@ class UserGuide(private val context: Context, private val theme: Drawable? = nul
                 image = icon,
                 video = video,
                 context = context,
-                theme = theme
+                theme = theme,
+                clickButton = { it ->
+                    incrementView(it)
+                }
             )
         }
     }
@@ -201,7 +208,10 @@ class UserGuide(private val context: Context, private val theme: Drawable? = nul
                 image = icon,
                 video = video,
                 context = context,
-                theme = theme
+                theme = theme,
+                clickButton = { it: Int ->
+                    incrementView(it)
+                }
             )
         }
     }

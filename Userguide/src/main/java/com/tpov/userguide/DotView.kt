@@ -49,7 +49,7 @@ class DotView {
                             context = context,
                             theme = theme,
                             item = item,
-                            buttonClick
+                            clickButton = buttonClick
                         )
                     }
                     Log.d("osfefjse", "$text")

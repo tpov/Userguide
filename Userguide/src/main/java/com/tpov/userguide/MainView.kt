@@ -38,7 +38,7 @@ class MainView : AppCompatActivity() {
         image: Drawable? = null,
         video: String? = null,
         theme: Drawable?,
-        item: View,
+        item: View? = null,
         clickButton: (Int) -> (Unit)
     ) {
         val dialog = BottomSheetDialog(context, R.style.BottomSheetDialog)
@@ -51,7 +51,7 @@ class MainView : AppCompatActivity() {
         val videoIcon = dialogView.findViewById<ImageView>(R.id.imv_video)
 
         animationView.setOnClickListener {
-            clickButton(item.id)
+            clickButton(item?.id ?: 0)
             dialog.dismiss()
         }
 
