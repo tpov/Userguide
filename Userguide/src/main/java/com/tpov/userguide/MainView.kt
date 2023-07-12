@@ -92,9 +92,8 @@ class MainView : AppCompatActivity() {
 
         //initializePlayer(context, videoView, video)
 
-        val i = Intent(Intent.ACTION_VIEW)
-        i.data = Uri.parse(video)
-        startActivity(i)
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(video))
+        context.startActivity(intent)
 
         val layoutParams = WindowManager.LayoutParams().apply {
             copyFrom(dialog.window?.attributes)
