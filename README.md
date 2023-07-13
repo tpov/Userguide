@@ -4,12 +4,14 @@ The UserGuide library is designed to simplify the use of applications for users.
 
 The library provides functions to easily add guides to view elements, display dialogs, and show information about the guides that the user has seen.
 
-##Integration
+## Integration
+
 To integrate the UserGuide library into your project, add the following dependency to your project's build.gradle file:
 
 ```implementation 'com.github.tpov:Userguide:1.4.1-alfa2'```
 
-Usage
+## Usage
+
 Create an instance of the UserGuide class, providing the application context and an optional theme for the dialog windows:
 
 ```
