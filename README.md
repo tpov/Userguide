@@ -38,7 +38,8 @@ userGuide.addNotification(text, options, titleText, icon, video)
 ```
 userGuide.showInfoFragment(text, fragmentManager)
 ```
-#Manage the counter: 
+# Manage the counter: 
+
 You can set the counter value using the setCounterValue method. The counter is used to display guides with countKey greater than or equal to the counter value:
 ```
 userGuide.setCounterValue()
