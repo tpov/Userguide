@@ -10,7 +10,7 @@ import android.util.Log
 import android.view.View
 import com.tpov.userguide.SharedPrefManager.getCounterView
 
-class DotView {
+ internal class DotView {
 
     fun showDot(
         item: View?,
