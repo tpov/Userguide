@@ -53,6 +53,7 @@
             android:orientation="horizontal">
 
             <LinearLayout
+                android:id="@+id/firstLayout1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -66,6 +67,7 @@
                 app:srcCompat="@drawable/ic_video" />
 
             <LinearLayout
+                android:id="@+id/firstLayout2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -80,6 +82,7 @@
                 app:srcCompat="@drawable/ic_check" />
 
             <LinearLayout
+                android:id="@+id/firstLayout3"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"

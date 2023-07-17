@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-class InfoFragment(private val guideItems: List<GuideItem>) : Fragment() {
+internal class InfoFragment(private val guideItems: List<GuideItem>) : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
 

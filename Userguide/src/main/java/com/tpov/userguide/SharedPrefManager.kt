@@ -2,7 +2,7 @@ package com.tpov.userguide
 
 import android.content.Context
 
-object SharedPrefManager {
+internal object SharedPrefManager {
     private const val PREF_KEY = "userguide_key"
     private const val PREF_KEY_COUNTER_VIEW = "userguide_key_view"
     private const val PREF_COUNTER = "counter"

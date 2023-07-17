@@ -29,7 +29,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 
 
 @UnstableApi //This is main dialog show information for user
-class MainView : AppCompatActivity() {
+internal class MainView : AppCompatActivity() {
 
     fun showDialog(
         text: String,

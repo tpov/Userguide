@@ -5,7 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
-class InfoAdapter(private val guideItems: List<GuideItem>) :
+internal class InfoAdapter(private val guideItems: List<GuideItem>) :
     RecyclerView.Adapter<InfoAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

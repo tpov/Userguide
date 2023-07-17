@@ -144,6 +144,7 @@ class UserGuide(private val context: Context, private val theme: Drawable? = nul
             incrementView(item.id)
         }
     }
+
     /**
      * This method calls the dialog immediately after it is called,
      * by default it is called only once.
@@ -163,14 +164,18 @@ class UserGuide(private val context: Context, private val theme: Drawable? = nul
         icon: Drawable? = null,
         video: String? = null,
         options: Options = Options(),
-
     ) {
+
         val packageName = context.applicationContext.packageName
         val packageManager = context.applicationContext.packageManager
         val packageInfo = packageManager.getPackageInfo(packageName, 0)
         val versionCode = packageInfo.versionCode
 
-        if (getCounterView(0) < options.countRepeat && (options.countKeyVersion == versionCode || options.countKeyVersion == 0)) {
+        if (
+            getCounterView(0) < options.countRepeat
+            && (options.countKeyVersion == versionCode || options.countKeyVersion == 0)
+            && (options.countKey == 0 || options.countKey == getCounterValue())
+        ) {
             MainView().showDialog(
                 text = text,
                 titulText = titleText,
@@ -201,19 +206,17 @@ class UserGuide(private val context: Context, private val theme: Drawable? = nul
         icon: Drawable? = null,
         video: String? = null
     ) {
-        if (options.countKey == getCounterValue() && options.countKey == 0) {
-            MainView().showDialog(
-                text = text,
-                titulText = titleText,
-                image = icon,
-                video = video,
-                context = context,
-                theme = theme,
-                clickButton = { it: Int ->
-                    incrementView(it)
-                }
-            )
-        }
+        MainView().showDialog(
+            text = text,
+            titulText = titleText,
+            image = icon,
+            video = video,
+            context = context,
+            theme = theme,
+            clickButton = { it: Int ->
+                incrementView(it)
+            }
+        )
     }
 
     /**
