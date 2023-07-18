@@ -220,10 +220,9 @@ class UserGuide(private val context: Context, private val theme: Drawable? = nul
                 context = context,
                 theme = theme,
                 clickButton = {
-                    incrementView(it)
+                    incrementView(id)
                 }
             )
-            incrementView(id)
         }
     }
 
