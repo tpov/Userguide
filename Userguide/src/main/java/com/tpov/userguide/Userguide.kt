@@ -201,7 +201,7 @@ class UserGuide(private val context: Context, private val theme: Drawable? = nul
      * @param video Video that will be next to the text of the manual.
      */
     fun addNotification(
-        id: Int,
+        id: Int = 0,
         text: String,
         options: Options = Options(),
         titleText: String? = null,
@@ -209,8 +209,9 @@ class UserGuide(private val context: Context, private val theme: Drawable? = nul
         video: String? = null
     ) {
         if (
-            getCounterView(id) < options.countRepeat
-            && getCounterValue() >= options.countKey
+            (getCounterView(id) < options.countRepeat
+            && getCounterValue() >= options.countKey)
+            || id == 0
         ) {
             MainView().showDialog(
                 text = text,
