@@ -193,6 +193,7 @@ class UserGuide(private val context: Context, private val theme: Drawable? = nul
     /**
      * Just display a dialog with options
      *
+     * @param id just key notification for options.countKey
      * @param text Manual text.
      * @param options Additional options for displaying this dialog
      * @param titleText Title guide.
@@ -200,23 +201,30 @@ class UserGuide(private val context: Context, private val theme: Drawable? = nul
      * @param video Video that will be next to the text of the manual.
      */
     fun addNotification(
+        id: Int,
         text: String,
         options: Options = Options(),
         titleText: String? = null,
         icon: Drawable? = null,
         video: String? = null
     ) {
-        MainView().showDialog(
-            text = text,
-            titulText = titleText,
-            image = icon,
-            video = video,
-            context = context,
-            theme = theme,
-            clickButton = { it: Int ->
-                incrementView(it)
-            }
-        )
+        if (
+            getCounterView(id) < options.countRepeat
+            && getCounterValue() >= options.countKey
+        ) {
+            MainView().showDialog(
+                text = text,
+                titulText = titleText,
+                image = icon,
+                video = video,
+                context = context,
+                theme = theme,
+                clickButton = {
+                    incrementView(it)
+                }
+            )
+            incrementView(id)
+        }
     }
 
     /**
