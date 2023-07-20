@@ -9,7 +9,7 @@ The library provides functions to easily add guides to view elements, display di
 
 - To integrate the UserGuide library into your project, add the following dependency to your project's build.gradle file:
 
-```implementation 'com.github.tpov:Userguide:1.4.1-alfa2'```
+```implementation 'com.github.tpov:Userguide:1.4.1'```
 
 ## Usage
 
@@ -32,7 +32,7 @@ userGuide.addGuideNewVersion(text, titleText, icon, video, options)
 ```
 - Show a notification dialog with options using the addNotification method:
 ```
-userGuide.addNotification(text, options, titleText, icon, video)
+userGuide.addNotification(id, text, options, titleText, icon, video)
 ```
 - Show a fragment with information about all the guides the user has seen using the showInfoFragment method. Provide the fragment manager to display the fragment:
 ```
