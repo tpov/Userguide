@@ -9,7 +9,7 @@ The library provides functions to easily add guides to view elements, display di
 
 - To integrate the UserGuide library into your project, add the following dependency to your project's build.gradle file:
 
-```implementation 'com.github.tpov:Userguide:1.4.1'```
+```implementation 'com.github.tpov:Userguide:1.4.2'```
 
 ## Usage
 
