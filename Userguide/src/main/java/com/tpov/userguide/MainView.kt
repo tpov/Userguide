@@ -46,6 +46,7 @@ internal class MainView : AppCompatActivity() {
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
         dialog.window?.setWindowAnimations(R.style.UserguideDialogAnimation)
         if (theme != null) dialog.window?.setBackgroundDrawable(theme)
+        dialog.setCancelable(false)
 
         val dialogView = View.inflate(context, R.layout.userguide_dialog_layout, null)
         val animationView = dialogView.findViewById<ImageView>(R.id.imv_ok)
