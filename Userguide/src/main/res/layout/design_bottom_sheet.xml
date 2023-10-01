@@ -38,11 +38,23 @@
                 android:layout_margin="8dp"
                 app:srcCompat="@android:drawable/btn_star_big_on" />
 
-            <TextView
-                android:id="@+id/tv_text"
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/bottom_sheet_behavior" />
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/tv_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/bottom_sheet_behavior" />
+                </LinearLayout>
+            </ScrollView>
+
         </LinearLayout>
 
         <LinearLayout

@@ -6,8 +6,4 @@
 
     <include layout="@layout/design_bottom_sheet" />
 
-
-    <!-- Другие элементы интерфейса пользователя для вашего диалогового окна -->
-    <!-- ... -->
-
 </LinearLayout>
