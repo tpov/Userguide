@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -45,10 +46,12 @@ internal class MainView : AppCompatActivity() {
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
         dialog.window?.setWindowAnimations(R.style.UserguideDialogAnimation)
         if (theme != null) dialog.window?.setBackgroundDrawable(theme)
+        dialog.setCancelable(false)
 
         val dialogView = View.inflate(context, R.layout.userguide_dialog_layout, null)
         val animationView = dialogView.findViewById<ImageView>(R.id.imv_ok)
         val videoIcon = dialogView.findViewById<ImageView>(R.id.imv_video)
+        val firstLayout = dialogView.findViewById<LinearLayout>(R.id.firstLayout1)
 
         animationView.setOnClickListener {
             clickButton(item?.id ?: 0)
@@ -73,11 +76,15 @@ internal class MainView : AppCompatActivity() {
 
             if (video != null) {
                 videoIcon.visibility = View.VISIBLE
+                firstLayout.visibility = View.VISIBLE
 
                 videoIcon.setOnClickListener {
                     showVideoDialog(video, context)
                 }
-            } else videoIcon.visibility = View.GONE
+            } else {
+                videoIcon.visibility = View.GONE
+                firstLayout.visibility = View.GONE
+            }
         }
         dialog.show()
     }

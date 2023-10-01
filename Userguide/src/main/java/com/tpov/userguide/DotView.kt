@@ -11,7 +11,6 @@ import android.view.View
 import com.tpov.userguide.SharedPrefManager.getCounterView
 
  internal class DotView {
-
     fun showDot(
         item: View?,
         generalView: Array<out View> = emptyArray(),
