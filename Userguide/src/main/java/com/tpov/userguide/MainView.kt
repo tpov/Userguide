@@ -51,6 +51,7 @@ internal class MainView : AppCompatActivity() {
         val dialogView = View.inflate(context, R.layout.userguide_dialog_layout, null)
         val animationView = dialogView.findViewById<ImageView>(R.id.imv_ok)
         val videoIcon = dialogView.findViewById<ImageView>(R.id.imv_video)
+        val imageView = dialogView.findViewById<ImageView>(R.id.imv_icon)
         val firstLayout = dialogView.findViewById<LinearLayout>(R.id.firstLayout1)
 
         animationView.setOnClickListener {
@@ -66,7 +67,10 @@ internal class MainView : AppCompatActivity() {
             val bottomSheet = dialog.findViewById<View>(R.id.design_bottom_sheet)
             dialog.findViewById<TextView>(R.id.tv_text)?.text = text
             dialog.findViewById<TextView>(R.id.tv_titul)?.text = titulText
-            dialog.findViewById<ImageView>(R.id.imv_icon)?.setImageDrawable(image)
+
+            if (image == null) imageView.visibility = View.GONE
+            else imageView.setImageDrawable(image)
+
             val behavior = BottomSheetBehavior.from(bottomSheet ?: run {
                 Toast.makeText(context, "Bottom sheet is null", Toast.LENGTH_SHORT).show()
                 return@setOnShowListener
