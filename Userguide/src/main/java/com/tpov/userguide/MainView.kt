@@ -1,30 +1,18 @@
 package com.tpov.userguide
 
-import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.Drawable
-import android.media.Image
 import android.net.Uri
 import android.view.View
-import android.view.ViewGroup
-import android.view.WindowManager
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.media3.common.MediaItem
-import androidx.media3.common.MimeTypes
 import androidx.media3.common.util.UnstableApi
-import androidx.media3.datasource.DefaultDataSource
-import androidx.media3.exoplayer.ExoPlayer
-import androidx.media3.exoplayer.source.ProgressiveMediaSource
-import androidx.media3.ui.PlayerView
-import com.airbnb.lottie.LottieAnimationView
-import com.airbnb.lottie.LottieDrawable
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
@@ -46,17 +34,16 @@ internal class MainView : AppCompatActivity() {
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
         dialog.window?.setWindowAnimations(R.style.UserguideDialogAnimation)
         if (theme != null) dialog.window?.setBackgroundDrawable(theme)
-        dialog.setCancelable(false)
 
         val dialogView = View.inflate(context, R.layout.userguide_dialog_layout, null)
-        val animationView = dialogView.findViewById<ImageView>(R.id.imv_ok)
+        val bOk = dialogView.findViewById<ImageView>(R.id.imv_ok)
         val videoIcon = dialogView.findViewById<ImageView>(R.id.imv_video)
         val imageView = dialogView.findViewById<ImageView>(R.id.imv_icon)
         val firstLayout = dialogView.findViewById<LinearLayout>(R.id.firstLayout1)
 
-        animationView.setOnClickListener {
-            clickButton(item?.id ?: 0)
+        bOk.setOnClickListener {
             dialog.dismiss()
+            clickButton(item?.id ?: 0)
         }
 
         val container =
@@ -76,8 +63,9 @@ internal class MainView : AppCompatActivity() {
                 return@setOnShowListener
             })
             behavior.state = BottomSheetBehavior.STATE_EXPANDED
-            behavior.skipCollapsed = true
-
+            behavior.skipCollapsed = false
+            dialog.setCancelable(false)
+            dialog.setCanceledOnTouchOutside(false)
             if (video != null) {
                 videoIcon.visibility = View.VISIBLE
                 firstLayout.visibility = View.VISIBLE
